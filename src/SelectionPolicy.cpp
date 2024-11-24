@@ -1,4 +1,6 @@
 #include "SelectionPolicy.h"
+
+
 NaiveSelection::NaiveSelection()
 {
     this->lastSelectedIndex = -1;
@@ -22,6 +24,8 @@ NaiveSelection *NaiveSelection::clone() const
     ret->lastSelectedIndex = this->lastSelectedIndex;
     return ret;
 }
+
+
 
 BalancedSelection::BalancedSelection(int LifeQualityScore, int EconomyScore, int EnvironmentScore): LifeQualityScore(LifeQualityScore),
  EconomyScore(EconomyScore), EnvironmentScore(EnvironmentScore){}
@@ -57,5 +61,66 @@ const string BalancedSelection::toString() const
 BalancedSelection *BalancedSelection::clone() const
 {
     BalancedSelection* ret = new BalancedSelection(this->EconomyScore, this->EnvironmentScore, this->LifeQualityScore);
+    return ret;
+}
+
+
+
+EconomySelection::EconomySelection()
+{
+    lastSelectedIndex = 0;
+}
+const FacilityType &EconomySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
+{
+    int index = lastSelectedIndex;
+    while(index <= facilitiesOptions.size()){
+        if(index == facilitiesOptions.size()) index = 0;
+        if(facilitiesOptions[index].getCategory()== FacilityCategory::ECONOMY){
+            lastSelectedIndex = index;
+        }
+        else index++;
+    }
+}
+
+const string EconomySelection::toString() const
+{
+    return string();
+}
+
+EconomySelection *EconomySelection::clone() const
+{
+    EconomySelection* ret = new EconomySelection();
+    ret->lastSelectedIndex = this->lastSelectedIndex;
+    return ret;
+}
+
+
+
+SustainabilitySelection::SustainabilitySelection()
+{
+    lastSelectedIndex = 0;
+}
+
+const FacilityType &SustainabilitySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
+{
+    int index = lastSelectedIndex;
+    while(index <= facilitiesOptions.size()){
+        if(index == facilitiesOptions.size()) index = 0;
+        if(facilitiesOptions[index].getCategory()== FacilityCategory::ENVIRONMENT){
+            lastSelectedIndex = index;
+        }
+        else index++;
+    }
+}
+
+const string SustainabilitySelection::toString() const
+{
+    return string();
+}
+
+SustainabilitySelection *SustainabilitySelection::clone() const
+{
+    SustainabilitySelection* ret = new SustainabilitySelection();
+    ret->lastSelectedIndex = this->lastSelectedIndex;
     return ret;
 }
