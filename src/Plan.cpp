@@ -31,10 +31,24 @@ void Plan::step()
 {
 }
 
-void Plan::printStatus()
-{
-    if(this->status == PlanStatus::AVALIABLE) std::cout << "Available" ;
-    if(this->status == PlanStatus::BUSY) std::cout << "Busy" ;
+void Plan::printStatus(){
+    std::cout << "PlanID: " + plan_id << std::endl;
+    std::cout << "SettlementName: " + getSettlement()->getName() << std::endl;
+    std::cout << "PlanStatus: ";
+    if(this->status == PlanStatus::AVALIABLE) std::cout << "Available" << std::endl ;
+    if(this->status == PlanStatus::BUSY) std::cout << "Busy" << std::endl ;
+    std::cout << "SelectionPolicy: " + getSelectionPolicy()->toString() << std::endl;
+    std::cout << "LifeQualityScore: " + getlifeQualityScore() << std::endl;
+    std::cout << "EconomyScore: " + getEconomyScore() << std::endl;
+    std::cout << "EnvironmentScore: " + getEnvironmentScore() << std::endl;
+    for( int i = 0 ; i < facilities.size(); i++ ){
+        std::cout <<"FacilityName: " + facilities[i]->getSettlementName() << std::endl;
+        std::cout <<"FacilityStatus: OPERATIONAL" << std::endl;
+    }
+    for( int i = 0 ; i < underConstruction.size(); i++ ){
+        std::cout <<"FacilityName: " + underConstruction[i]->getSettlementName() << std::endl;
+        std::cout <<"FacilityStatus: UNDER_CONSTRUCTIONS" << std::endl;
+    }
 }
 
 
