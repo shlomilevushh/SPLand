@@ -45,7 +45,7 @@ const FacilityType &BalancedSelection::selectFacility(const vector<FacilityType>
         tempLifeScore = this->LifeQualityScore + facilitiesOptions[i].getLifeQualityScore();
         max = std::max(std::max(tempEconScore, tempEnvScore), tempLifeScore);
         min = std::min(std::min(tempEconScore, tempEnvScore), tempLifeScore);
-        if((max - min) < distance){
+        if(((max - min) < distance) || (i==0)){
             retIndex = i;
             distance = max - min;
             this->EconomyScore = tempEconScore;

@@ -13,6 +13,9 @@ class SelectionPolicy;
 class Simulation {
     public:
         Simulation(const string &configFilePath);
+        Simulation(const Simulation &other);
+        Simulation &operator=(const Simulation& other);
+        ~Simulation();
         void start();
         void addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy);
         void addAction(BaseAction *action);
