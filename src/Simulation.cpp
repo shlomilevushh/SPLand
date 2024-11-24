@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include "Auxiliary.h"
+#include "Action.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -71,8 +72,18 @@ Simulation::Simulation(const string &configFilePath): planCounter(0), isRunning(
 }
 void Simulation::start()
 {
+    string str;
+    vector<string> parsed_str;
     while(isRunning){
-        
+        getline(cin, str);
+        parsed_str = Auxiliary::parseArguments(str);
+        if(parsed_str[0] == "step"){
+            BaseAction* newStep = new SimulateStep(stoi(parsed_str[1]));
+            newStep->act(*this);
+            actionsLog.push_back(newStep);
+        }
+        if(parsed_str[0] == "plan")
+
     }
 
 }
@@ -119,6 +130,11 @@ vector<Plan>& Simulation::getPlans()
 {
     vector<Plan>& plansRef = plans;
     return plansRef;
+}
+
+vector<BaseAction *> Simulation::getActionsLog()
+{
+    return actionsLog;
 }
 
 bool Simulation::isFacilityExists(const string &facilityName)

@@ -22,6 +22,7 @@ class Simulation {
         Settlement *getSettlement(const string &settlementName);
         Plan &getPlan(const int planID);
         vector<Plan>& getPlans();
+        vector<BaseAction*> getActionsLog();
         bool isFacilityExists(const string &facilityName);
         bool isPlanExists(const int planID);
         void step();
