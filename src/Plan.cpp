@@ -27,8 +27,17 @@ const int Plan::getEnvironmentScore() const
 }
 
 
-void Plan::step()
-{
+void Plan::step(){
+    while(underConstruction.size()<static_cast<int>(this->settlement->getType())+1){
+        const FacilityType& newFacility = this->selectionPolicy->selectFacility(facilityOptions);
+        underConstruction.push_back(new Facility(newFacility,settlement->getName()));
+    }
+    for(int i = 0 ; i < underConstruction.size() ; i++ ){
+        if(underConstruction[i]->step() == FacilityStatus::OPERATIONAL){
+            addFacility(underConstruction[i]);
+            underConstruction.erase(underConstruction.begin()+i);
+        }
+    }
 }
 
 void Plan::printStatus(){
@@ -58,6 +67,11 @@ const vector<Facility *> &Plan::getFacilities() const
     return this->facilities;
 }
 
+const vector<Facility *> &Plan::getUnderConstruction() const
+{
+    return this->underConstruction;
+}
+
 const Settlement *Plan::getSettlement()
 {
     return settlement;
@@ -71,6 +85,9 @@ SelectionPolicy *Plan::getSelectionPolicy()
 void Plan::addFacility(Facility *facility)
 {
     facilities.push_back(facility);
+    this->life_quality_score += facility->getLifeQualityScore();
+    this->economy_score += facility->getEconomyScore();
+    this->environment_score += facility->getEnvironmentScore();
 }
 
 int Plan::getPlanId()

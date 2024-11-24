@@ -166,7 +166,19 @@ void ChangePlanPolicy::act(Simulation &simulation){
             std::cout << "newPolicy: " + newPolicy << std::endl;
             SelectionPolicy* selectedPolicy = nullptr;
             if(newPolicy == "nve")  selectedPolicy =  new NaiveSelection();
-            else if(newPolicy == "bal")  selectedPolicy =  new BalancedSelection(todfghjklChangePlan.getlifeQualityScore(),toChangePlan.getEconomyScore(),toChangePlan.getEnvironmentScore());
+            else if(newPolicy == "bal"){
+                int underConstructionEco = 0;
+                int underConstructionLife = 0;
+                int underConstructionEnv = 0;
+                vector<Facility*> underConstruction = toChangePlan.getUnderConstruction();
+                for(int i=0; i< underConstruction.size(); i++){
+                    underConstructionEco = underConstruction[i]->getEconomyScore();
+                    underConstructionLife = underConstruction[i]->getLifeQualityScore();
+                    underConstructionEnv = underConstruction[i]->getEnvironmentScore();
+                }  
+                selectedPolicy =  new BalancedSelection(toChangePlan.getlifeQualityScore() + underConstructionLife
+                ,toChangePlan.getEconomyScore() + underConstructionEco,toChangePlan.getEnvironmentScore()+ underConstructionEnv);
+            }
             else if(newPolicy == "eco")  selectedPolicy =  new EconomySelection();
             else if(newPolicy == "env")  selectedPolicy =  new SustainabilitySelection();
             else this->error("Cannot change selection policy");
@@ -213,6 +225,16 @@ const string PrintActionsLog::toString() const{
 Close::Close(){}
 
 void Close::act(Simulation &simulation){
+    for(int i=0 ; i < simulation.getPlans().size() ; i++ ){
+        Plan tempPlan = simulation.getPlans()[i];
+        std::cout << "PlanID: " + tempPlan.getPlanId() << std::endl;
+        std::cout << "SettlementName: " + tempPlan.getSettlement()->getName() << std::endl;
+        std::cout << "LifeQuality_Score: " + tempPlan.getlifeQualityScore() << std::endl;
+        std::cout << "Economy_Score: " + tempPlan.getEconomyScore() << std::endl;
+        std::cout << "Enviroment_Score: " + tempPlan.getEnvironmentScore() << std::endl;
+    }
+    simulation.close();
+    this->complete();
 }
 
 Close *Close::clone() const{
