@@ -113,3 +113,13 @@ vector<Plan>& Simulation::getPlans()
     vector<Plan>& plansRef = plans;
     return plansRef;
 }
+
+bool Simulation::isFacilityExists(const string &facilityName)
+{
+    for(int i=0; i< facilitiesOptions.size();i++){
+        if(facilitiesOptions[i].getName()== facilityName){
+            return true;
+        }
+    }
+    return false;
+}
