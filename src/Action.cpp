@@ -124,19 +124,21 @@ const string AddFacility::toString() const
 PrintPlanStatus::PrintPlanStatus(int planId) : planId(planId) {}
 
 void PrintPlanStatus::act(Simulation &simulation){
-    if(!simulation.isPlanExists(this->planId)) this->error("Plan doesn’t exist");
+    if(!simulation.isPlanExists(this->planId)) this->error("Plan doesn't exist");
     else{
         Plan toPrintPlan = simulation.getPlan(planId);
         std::cout << "PlanID: " + planId << std::endl;
-        std::cout << "SettlementName: " + toPrintPlan.getSettelment().getName() << std::endl;
-        std::cout << "PlanStatus: " + toPrintPlan.printStatus() << std::endl;
-        std::cout << "SelectionPolicy: " + toPrintPlan.getSelctionPolicy().toString() << std::endl;
+        std::cout << "SettlementName: " + toPrintPlan.getSettlement()->getName() << std::endl;
+        std::cout << "PlanStatus: ";
+        toPrintPlan.printStatus();
+        std::cout << "\n";
+        std::cout << "SelectionPolicy: " + toPrintPlan.getSelectionPolicy()->toString() << std::endl;
         std::cout << "LifeQualityScore: " + toPrintPlan.getlifeQualityScore() << std::endl;
         std::cout << "EconomyScore: " + toPrintPlan.getEconomyScore() << std::endl;
         std::cout << "EnvironmentScore: " + toPrintPlan.getEnvironmentScore() << std::endl;
         for( int i = 0 ; i < toPrintPlan.getFacilities().size(); i++ ){
             std::cout <<"FacilityName: " + toPrintPlan.getFacilities()[i]->getSettlementName() << std::endl;
-            std::cout <<"FacilityStatus: " + toPrintPlan.getFacilities()[i]->getStatus().toString() << std::endl;
+            std::cout <<"FacilityStatus: " + toPrintPlan.getFacilities()[i].getStatusString() << std::endl;
         }
         this->complete();
     }
@@ -149,5 +151,58 @@ PrintPlanStatus *PrintPlanStatus::clone() const
 
 const string PrintPlanStatus::toString() const
 {
+    return string();
+}
+
+//ChangePlanPolicy Class:
+
+ChangePlanPolicy::ChangePlanPolicy(const int planId, const string &newPolicy):
+planId(planId), newPolicy(newPolicy) {}
+
+void ChangePlanPolicy::act(Simulation &simulation){
+    if(!simulation.isPlanExists(planId)) this->error("Cannot change selection policy");
+    else{
+        Plan toChangePlan = simulation.getPlan(planId);
+        if(toChangePlan.getSelectionPolicy()->toString() == newPolicy)this->error("Cannot change selection policy");
+        else{
+            std::cout << "PlanID: " + planId << std::endl;
+            std::cout << "previousPolicy: " + toChangePlan.getSelectionPolicy()->toString() << std::endl;
+            std::cout << "newPolicy: " + newPolicy << std::endl;
+            SelectionPolicy* selectedPolicy = nullptr;
+            if(newPolicy == "nve")  selectedPolicy =  new NaiveSelection();
+            else if(newPolicy == "bal")  selectedPolicy =  new BalancedSelection(toChangePlan.getlifeQualityScore(),toChangePlan.getEconomyScore(),toChangePlan.getEnvironmentScore());
+            else if(newPolicy == "eco")  selectedPolicy =  new EconomySelection();
+            else if(newPolicy == "env")  selectedPolicy =  new SustainabilitySelection();
+            else this->error("Cannot change selection policy");
+            if(selectedPolicy != nullptr){
+                toChangePlan.setSelectionPolicy(selectedPolicy);
+                this->complete();
+            }
+        }
+    }
+}
+
+ChangePlanPolicy *ChangePlanPolicy::clone() const{
+    return new ChangePlanPolicy(planId,newPolicy);
+}
+
+const string ChangePlanPolicy::toString() const{
+    return string();
+}
+
+//PrintActionsLog Class:
+
+PrintActionsLog::PrintActionsLog(){}
+
+void PrintActionsLog::act(Simulation &simulation){
+    for( int i = 0 ; i < simulation.getActionsLog().size() ; i++ ){
+        std::cout << simulation.getActionsLog()[i].    }
+}
+
+PrintActionsLog *PrintActionsLog::clone() const{
+    return new PrintActionsLog();
+}
+
+const string PrintActionsLog::toString() const{
     return string();
 }
