@@ -55,6 +55,12 @@ const FacilityStatus &Facility::getStatus() const
     return this->status;
 }
 
+const string Facility::getStatusString()
+{
+    if(status == FacilityStatus::OPERATIONAL) return "OPERATIONAL";
+    else return "UNDER CONSTRUCTION";
+}
+
 const string Facility::toString() const
 {
     return string();

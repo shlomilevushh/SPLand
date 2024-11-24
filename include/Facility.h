@@ -48,6 +48,7 @@ class Facility: public FacilityType {
         FacilityStatus step();
         void setStatus(FacilityStatus status);
         const FacilityStatus& getStatus() const;
+        const string getStatusString();
         const string toString() const;
 
     private:

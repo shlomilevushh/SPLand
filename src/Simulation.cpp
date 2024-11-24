@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Simulation::Simulation(const string &configFilePath): planCounter(0)
+Simulation::Simulation(const string &configFilePath): planCounter(0), isRunning(true)
 {
     ifstream file("GFG.txt");
     string line;
@@ -71,6 +71,9 @@ Simulation::Simulation(const string &configFilePath): planCounter(0)
 }
 void Simulation::start()
 {
+    while(isRunning){
+        
+    }
 
 }
 void Simulation::addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy)
