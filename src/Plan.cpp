@@ -46,6 +46,16 @@ const vector<Facility *> &Plan::getFacilities() const
     return this->facilities;
 }
 
+const Settlement *Plan::getSettlement()
+{
+    return settlement;
+}
+
+SelectionPolicy *Plan::getSelectionPolicy()
+{
+    return selectionPolicy;
+}
+
 void Plan::addFacility(Facility *facility)
 {
     facilities.push_back(facility);
