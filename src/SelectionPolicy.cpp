@@ -48,6 +48,9 @@ const FacilityType &BalancedSelection::selectFacility(const vector<FacilityType>
         if((max - min) < distance){
             retIndex = i;
             distance = max - min;
+            this->EconomyScore = tempEconScore;
+            this->EnvironmentScore = tempEnvScore;
+            this->LifeQualityScore = tempLifeScore;
         }
     }
     return facilitiesOptions[retIndex];

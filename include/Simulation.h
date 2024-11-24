@@ -21,6 +21,7 @@ class Simulation {
         bool isSettlementExists(const string &settlementName);
         Settlement *getSettlement(const string &settlementName);
         Plan &getPlan(const int planID);
+        vector<Plan> getPlans();
         void step();
         void close();
         void open();
