@@ -69,6 +69,10 @@ Simulation::Simulation(const string &configFilePath): planCounter(0)
         cerr << "Unable to open file!" << endl;
     }
 }
+void Simulation::start()
+{
+
+}
 void Simulation::addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy)
 {
     Plan newPlan(planCounter, *settlement, selectionPolicy, facilitiesOptions);
@@ -118,6 +122,16 @@ bool Simulation::isFacilityExists(const string &facilityName)
 {
     for(int i=0; i< facilitiesOptions.size();i++){
         if(facilitiesOptions[i].getName()== facilityName){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Simulation::isPlanExists(const int planID)
+{
+    for(int i=0; i< plans.size();i++){
+        if(plans[i].getPlanId() == planID){
             return true;
         }
     }
