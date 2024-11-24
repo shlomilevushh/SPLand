@@ -26,10 +26,6 @@ const int Plan::getEnvironmentScore() const
     return this->environment_score;
 }
 
-void Plan::setSelectionPolicy(SelectionPolicy *selectionPolicy)
-{
-    this->selectionPolicy = selectionPolicy;
-}
 
 void Plan::step()
 {
@@ -40,6 +36,8 @@ void Plan::printStatus()
     if(this->status == PlanStatus::AVALIABLE) std::cout << "Available" ;
     if(this->status == PlanStatus::BUSY) std::cout << "Busy" ;
 }
+
+
 
 const vector<Facility *> &Plan::getFacilities() const
 {
