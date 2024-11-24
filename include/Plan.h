@@ -20,7 +20,10 @@ class Plan {
         void step();
         void printStatus();
         const vector<Facility*> &getFacilities() const;
+        const Settlement* getSettlement();
+        SelectionPolicy* getSelectionPolicy();
         void addFacility(Facility* facility);
+        int getPlanId();
         const string toString() const;
 
     private:

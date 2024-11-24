@@ -61,6 +61,11 @@ void Plan::addFacility(Facility *facility)
     facilities.push_back(facility);
 }
 
+int Plan::getPlanId()
+{
+    return plan_id;
+}
+
 const string Plan::toString() const
 {
     return string();

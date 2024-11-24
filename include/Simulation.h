@@ -23,6 +23,7 @@ class Simulation {
         Plan &getPlan(const int planID);
         vector<Plan>& getPlans();
         bool isFacilityExists(const string &facilityName);
+        bool isPlanExists(const int planID);
         void step();
         void close();
         void open();
