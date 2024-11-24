@@ -3,7 +3,7 @@
 
 Plan::Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions)
     : plan_id(planId),
-      settlement(&settlement),
+      settlement(new Settlement(settlement)),
       selectionPolicy(selectionPolicy),
       status(PlanStatus::AVALIABLE),
       facilityOptions(facilityOptions),
@@ -26,9 +26,13 @@ const int Plan::getEnvironmentScore() const
     return this->environment_score;
 }
 
+void Plan::setSelectionPolicy(SelectionPolicy *selectionPolicy){
+    delete this->selectionPolicy;
+    this->selectionPolicy = selectionPolicy;
+}
 
 void Plan::step(){
-    while(underConstruction.size()<static_cast<int>(this->settlement->getType())+1){
+    while(underConstruction.size() < static_cast<int>(this->settlement->getType())+1){
         const FacilityType& newFacility = this->selectionPolicy->selectFacility(facilityOptions);
         underConstruction.push_back(new Facility(newFacility,settlement->getName()));
     }

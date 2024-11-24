@@ -45,7 +45,7 @@ const FacilityType &BalancedSelection::selectFacility(const vector<FacilityType>
         tempLifeScore = this->LifeQualityScore + facilitiesOptions[i].getLifeQualityScore();
         max = std::max(std::max(tempEconScore, tempEnvScore), tempLifeScore);
         min = std::min(std::min(tempEconScore, tempEnvScore), tempLifeScore);
-        if((max - min) < distance){
+        if(((max - min) < distance) || (i==0)){
             retIndex = i;
             distance = max - min;
             this->EconomyScore = tempEconScore;
@@ -69,20 +69,23 @@ BalancedSelection *BalancedSelection::clone() const
 
 
 
-EconomySelection::EconomySelection()
+EconomySelection::EconomySelection():lastSelectedIndex(-1)
 {
-    lastSelectedIndex = 0;
+    
 }
 const FacilityType &EconomySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
 {
-    int index = lastSelectedIndex;
-    while(index <= facilitiesOptions.size()){
+    int index = lastSelectedIndex + 1;
+    bool found = false;
+    while(index <= facilitiesOptions.size() && !found){
         if(index == facilitiesOptions.size()) index = 0;
         if(facilitiesOptions[index].getCategory()== FacilityCategory::ECONOMY){
             lastSelectedIndex = index;
+            found = true;
         }
         else index++;
     }
+    return facilitiesOptions[lastSelectedIndex];
 }
 
 const string EconomySelection::toString() const
@@ -99,21 +102,23 @@ EconomySelection *EconomySelection::clone() const
 
 
 
-SustainabilitySelection::SustainabilitySelection()
+SustainabilitySelection::SustainabilitySelection():lastSelectedIndex(-1)
 {
-    lastSelectedIndex = 0;
+
 }
 
 const FacilityType &SustainabilitySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
 {
-    int index = lastSelectedIndex;
-    while(index <= facilitiesOptions.size()){
+    int index = lastSelectedIndex + 1;
+    bool found = false;
+    while(index <= facilitiesOptions.size() && !found){
         if(index == facilitiesOptions.size()) index = 0;
         if(facilitiesOptions[index].getCategory()== FacilityCategory::ENVIRONMENT){
             lastSelectedIndex = index;
         }
         else index++;
     }
+    return facilitiesOptions[lastSelectedIndex];
 }
 
 const string SustainabilitySelection::toString() const

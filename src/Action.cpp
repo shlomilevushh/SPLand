@@ -55,7 +55,7 @@ settlementName(settlementName) , selectionPolicy(selectionPolicy) {}
 
 void AddPlan::act(Simulation &simulation){
     SelectionPolicy* selectedPolicy = nullptr;
-    if(simulation.isSettlementExists(settlementName)) this->error("Cannot create this plan");
+    if(!simulation.isSettlementExists(settlementName)) this->error("Cannot create this plan");
     else{
         if(selectionPolicy == "nve")  selectedPolicy =  new NaiveSelection();
         else if(selectionPolicy == "bal")  selectedPolicy =  new BalancedSelection(0,0,0);
