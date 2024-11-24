@@ -87,6 +87,40 @@ Simulation::Simulation(const Simulation &other): planCounter(other.planCounter),
         }
 }
 
+Simulation &Simulation::operator=(const Simulation &other)
+{
+    if(&other != this){
+        isRunning = other.isRunning;
+        planCounter = other.planCounter;
+
+        this->plans.clear();
+        for(int i=0; i < other.plans.size(); i++){
+            this->plans.push_back(other.plans[i]);
+        }
+        this->facilitiesOptions.clear();
+        for(int i=0; i< other.facilitiesOptions.size(); i++){
+            this->facilitiesOptions.push_back(other.facilitiesOptions[i]);
+        }
+
+        for(int i=0; i< settlements.size(); i++){
+            delete settlements[i];
+        }
+        this->settlements.clear();
+        for(int i=0; i< other.settlements.size(); i++){
+            this->settlements.push_back(new Settlement(*other.settlements[i]));
+        }
+
+        for(int i=0; i< actionsLog.size(); i++){
+            delete actionsLog[i];
+        }
+        actionsLog.clear();
+        for(int i=0; i< other.actionsLog.size(); i++){
+            this->actionsLog.push_back(other.actionsLog[i]->clone());
+        }
+    }
+    return *this;
+}
+
 Simulation::~Simulation()
 {
     for(int i=0; i<actionsLog.size();i++){
@@ -222,6 +256,24 @@ bool Simulation::isSettlementExists(const string &settlementName)
         }
     }
     return false;
+}
+
+Settlement *Simulation::getSettlement(const string &settlementName)
+{
+    for(int i=0; i< settlements.size(); i++){
+        if(settlements[i]->getName() == settlementName){
+            return settlements[i];
+        }
+    }
+}
+
+Plan &Simulation::getPlan(const int planID)
+{
+    for(int i=0; i< plans.size(); i++){
+        if(plans[i].getPlanId() == planID){
+            return plans[i];
+        }
+    }
 }
 
 vector<Plan>& Simulation::getPlans()
