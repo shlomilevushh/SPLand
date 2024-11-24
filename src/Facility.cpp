@@ -3,6 +3,11 @@
 FacilityType::FacilityType(const string &name, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) : 
 name(name) , category(category) , price(price) , lifeQuality_score(lifeQuality_score) , economy_score(economy_score) , environment_score(environment_score) {}
 
+const string &FacilityType::getName() const{
+    return name;
+}
+
+
 int FacilityType::getCost() const{
     return this->price;
 }
@@ -20,7 +25,7 @@ int FacilityType::getEconomyScore() const{
 }
 
 FacilityCategory FacilityType::getCategory() const{
-    return FacilityCategory();
+    return this->category;
 }
 
 Facility::Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) :
@@ -42,7 +47,8 @@ const int Facility::getTimeLeft() const
 
 FacilityStatus Facility::step()
 {
-    return FacilityStatus();
+    if(--this->timeLeft == 0) this->setStatus(FacilityStatus::OPERATIONAL);
+    return getStatus();
 }
 
 void Facility::setStatus(FacilityStatus status)
@@ -55,13 +61,8 @@ const FacilityStatus &Facility::getStatus() const
     return this->status;
 }
 
-const string Facility::getStatusString()
-{
-    if(status == FacilityStatus::OPERATIONAL) return "OPERATIONAL";
-    else return "UNDER CONSTRUCTION";
-}
 
 const string Facility::toString() const
 {
-    return string();
+    return "";
 }
